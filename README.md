@@ -30,7 +30,7 @@ Just use `make` to know what you can do.
 
 - [x] Write a few basic matrices & display them
 - [ ] Solve manual maps
-- [ ] Generate random maps
+- [x] Generate random maps
 - [ ] Solve 'em all!
   - [ ] Handle _valid_ maps
   - [ ] Handle _invalid_ maps

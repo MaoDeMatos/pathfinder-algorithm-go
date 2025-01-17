@@ -18,10 +18,7 @@ var testMatrix Rows = Rows{
 func TestMatrixDisplay(t *testing.T) {
 	t.Run("format properly each row of the matrix", func(t *testing.T) {
 		got := testMatrix.String()
-		want := `
-s1e
-000
-`
+		want := "\nS . E \nW W W \n"
 
 		if got != want {
 			t.Errorf("got %q want %q", got, want)

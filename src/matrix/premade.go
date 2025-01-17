@@ -1,6 +1,6 @@
 package matrix
 
-var Default Rows = Rows{
+var Simple Rows = Rows{
 	{
 		{X: 0, Y: 0, NodeType: StartNode},
 		{X: 1, Y: 0, NodeType: NormalNode},
