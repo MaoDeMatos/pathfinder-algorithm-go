@@ -28,7 +28,7 @@ Just use `make` to know what you can do.
 
 ### MVP
 
-- [ ] Display basic matrix & display it
+- [x] Write a few basic matrices & display them
 - [ ] Solve manual maps
 - [ ] Generate random maps
 - [ ] Solve 'em all!
