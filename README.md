@@ -23,3 +23,27 @@ It must :
 ## Usage
 
 Just use `make` to know what you can do.
+
+## TODO
+
+### MVP
+
+- [ ] Write a few basic matrices & display them
+- [ ] Solve manual maps
+- [ ] Generate random maps
+- [ ] Solve 'em all!
+  - [ ] Handle _valid_ maps
+  - [ ] Handle _invalid_ maps
+- [ ] Display solved map
+  - [ ] Display stats (path length, time...)
+  - [ ] Display solved map with colors
+
+### v1
+
+- [ ] Parse JSON input
+- [ ] Simple command line argument to get input matrix
+
+### v1.x
+
+- [ ] Display map (fancier)
+- [ ] Better CLI

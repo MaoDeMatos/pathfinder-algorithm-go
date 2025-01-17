@@ -17,7 +17,7 @@ build: ## Build for Production
 
 .PHONY: build-dev
 build-dev: ## Build for Development
-	go build -a -o ${BUILD_PATH}/${BIN_NAME} ./src/main.go
+	go build -o ${BUILD_PATH}/${BIN_NAME} ./src/main.go
 
 .PHONY: run
 run: ## Run the executable
@@ -26,6 +26,10 @@ run: ## Run the executable
 .PHONY: dev
 dev: ## Run in Development mode
 	air --build.bin ${BUILD_PATH}/${BIN_NAME}
+
+.PHONY: test
+test: ## Run test command
+	go test ./src
 
 # .PHONY: clear
 # clear: ## Clear generated files
