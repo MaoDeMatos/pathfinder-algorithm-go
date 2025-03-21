@@ -4,11 +4,12 @@ import "errors"
 
 var ErrEmptyQueue = errors.New("queue is empty")
 
-type NodeQueue []Node
+type Queue[T any] []T
 
-func (q *NodeQueue) Dequeue() (Node, error) {
+func (q *Queue[T]) Dequeue() (T, error) {
 	if len(*q) < 1 {
-		return Node{}, ErrEmptyQueue
+		var zeroValue T
+		return zeroValue, ErrEmptyQueue
 	}
 
 	front := (*q)[0]
@@ -17,18 +18,19 @@ func (q *NodeQueue) Dequeue() (Node, error) {
 	return front, nil
 }
 
-func (q *NodeQueue) Enqueue(value Node) {
+func (q *Queue[T]) Enqueue(value T) {
 	*q = append(*q, value)
 }
 
-func (q *NodeQueue) Peek() (Node, error) {
+func (q *Queue[T]) Peek() (T, error) {
 	if len(*q) < 1 {
-		return Node{}, ErrEmptyQueue
+		var zeroValue T
+		return zeroValue, ErrEmptyQueue
 	}
 
 	return (*q)[0], nil
 }
 
-func (q *NodeQueue) Size() int {
+func (q *Queue[T]) Size() int {
 	return len(*q)
 }

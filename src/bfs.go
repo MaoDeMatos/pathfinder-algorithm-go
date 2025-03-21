@@ -42,7 +42,7 @@ func BreadthFirstSearch(input Input) (route []Node, err error) {
 		return route, err
 	}
 
-	q := NodeQueue{}
+	q := Queue[Node]{}
 	q.Enqueue(rootNode)
 
 	// create a parent map to save the interactions between nodes and recreate the path
