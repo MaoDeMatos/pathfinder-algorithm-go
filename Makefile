@@ -5,7 +5,7 @@ BUILD_PATH = ./tmp
 BIN_NAME = main
 
 .PHONY: install
-install: ## Install dependencies and setup .env file
+install: ## Install/upgrade dependencies
 	@echo ⬇️ Download project dependencies
 	go mod download
 	@echo ⬇️ Download air

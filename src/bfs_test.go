@@ -4,38 +4,85 @@ import (
 	"testing"
 )
 
-var testInput = Input{
+var simpleInput = Input{
 	{
-		Node{X: 0, Y: 0, Value: StartNode},
-		Node{X: 1, Y: 0, Value: NormalNode},
-		Node{X: 2, Y: 0, Value: EndNode},
+		Node{X: 0, Y: 0, Type: StartNode},
+		Node{X: 1, Y: 0, Type: NormalNode},
+		Node{X: 2, Y: 0, Type: EndNode},
 	},
 }
 
-var tests = []struct {
+var errorInput = Input{
+	{
+		Node{X: 0, Y: 0, Type: StartNode},
+		Node{X: 1, Y: 0, Type: NormalNode},
+		Node{X: 2, Y: 0, Type: NormalNode},
+	},
+}
+
+var fourByFourInput = Input{
+	{
+		Node{X: 0, Y: 0, Type: StartNode},
+		Node{X: 1, Y: 0, Type: NormalNode},
+		Node{X: 2, Y: 0, Type: WallNode},
+		Node{X: 3, Y: 0, Type: NormalNode},
+	},
+	{
+		Node{X: 0, Y: 1, Type: NormalNode},
+		Node{X: 1, Y: 1, Type: WallNode},
+		Node{X: 2, Y: 1, Type: NormalNode},
+		Node{X: 3, Y: 1, Type: NormalNode},
+	},
+	{
+		Node{X: 0, Y: 2, Type: NormalNode},
+		Node{X: 1, Y: 2, Type: NormalNode},
+		Node{X: 2, Y: 2, Type: WallNode},
+		Node{X: 3, Y: 2, Type: WallNode},
+	},
+	{
+		Node{X: 0, Y: 3, Type: WallNode},
+		Node{X: 1, Y: 3, Type: NormalNode},
+		Node{X: 2, Y: 3, Type: NormalNode},
+		Node{X: 3, Y: 3, Type: EndNode},
+	},
+}
+
+var testCases = []struct {
 	name     string
 	input    Input
-	start    Node
-	end      Node
 	expected []Node
 	error    error
 }{
 	{
-		name:     "simplest path",
-		input:    testInput,
-		expected: testInput[0],
+		name:     "simplest input",
+		input:    simpleInput,
+		expected: simpleInput[0],
 		error:    nil,
 	},
-	// {
-	// 	name:     "no result",
-	// 	input:    testInput,
-	// 	expected: []Node{},
-	// 	error:    ErrNoResult,
-	// },
+	{
+		name:     "error input - no end node",
+		input:    errorInput,
+		expected: nil,
+		error:    ErrNotFound,
+	},
+	{
+		name:  "4x4 input",
+		input: fourByFourInput,
+		expected: []Node{
+			{X: 0, Y: 0, Type: StartNode},
+			{X: 0, Y: 1, Type: NormalNode},
+			{X: 0, Y: 2, Type: NormalNode},
+			{X: 1, Y: 2, Type: NormalNode},
+			{X: 1, Y: 3, Type: NormalNode},
+			{X: 2, Y: 3, Type: NormalNode},
+			{X: 3, Y: 3, Type: EndNode},
+		},
+		error: nil,
+	},
 }
 
 func TestBreadthFirstSearch(t *testing.T) {
-	for _, test := range tests {
+	for _, test := range testCases {
 		t.Run(test.name, func(t *testing.T) {
 			result, err := BreadthFirstSearch(test.input)
 

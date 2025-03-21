@@ -27,9 +27,9 @@ const (
 )
 
 type Node struct {
-	X     int
-	Y     int
-	Value NodeType
+	X    int
+	Y    int
+	Type NodeType
 }
 
 type Row []Node
@@ -58,13 +58,13 @@ func BreadthFirstSearch(input Input) (route []Node, err error) {
 		}
 
 		// check if this is the target
-		if currentNode.Value == EndNode {
+		if currentNode.Type == EndNode {
 			route = append(route, currentNode)
 
 			// build route from the node history
 			for parentNode, exists := parents[currentNode]; exists; parentNode, exists = parents[parentNode] {
 				route = append(route, parentNode)
-				if parentNode.Value == StartNode {
+				if parentNode.Type == StartNode {
 					break
 				}
 			}
@@ -86,7 +86,7 @@ func BreadthFirstSearch(input Input) (route []Node, err error) {
 			)
 
 			// If node exists and is not a wall, you can add it to the list of nodes to add to the queue
-			if notFound == nil && neighborNode.Value != WallNode {
+			if notFound == nil && neighborNode.Type != WallNode {
 				neighbors = append(neighbors, neighborNode)
 			}
 		}
@@ -104,9 +104,9 @@ func BreadthFirstSearch(input Input) (route []Node, err error) {
 }
 
 func findNodeByType(input Input, nodeType NodeType) (Node, error) {
-	for i := range input {
-		for _, node := range input[i] {
-			if node.Value == nodeType {
+	for rowIndex := range input {
+		for _, node := range input[rowIndex] {
+			if node.Type == nodeType {
 				return node, nil
 			}
 		}
@@ -116,8 +116,8 @@ func findNodeByType(input Input, nodeType NodeType) (Node, error) {
 }
 
 func findNodeByCoordinates(input Input, x, y int) (Node, error) {
-	for i := range input {
-		for _, node := range input[i] {
+	for rowIndex := range input {
+		for _, node := range input[rowIndex] {
 			if node.X == x && node.Y == y {
 				return node, nil
 			}
