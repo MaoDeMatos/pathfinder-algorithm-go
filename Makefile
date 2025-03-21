@@ -13,11 +13,11 @@ install: ## Install/upgrade dependencies
 
 .PHONY: build
 build: ## Build for Production
-	go build -a -o ${BUILD_PATH}/${BIN_NAME}-prod -ldflags="-s -w" ./src/main.go
+	go build -a -o ${BUILD_PATH}/${BIN_NAME}-prod -ldflags="-s -w" ./src
 
 .PHONY: build-dev
 build-dev: ## Build for Development
-	go build -o ${BUILD_PATH}/${BIN_NAME} ./src/main.go
+	go build -o ${BUILD_PATH}/${BIN_NAME} ./src
 
 .PHONY: run
 run: ## Run the executable
@@ -29,7 +29,7 @@ dev: ## Run in Development mode
 
 .PHONY: test
 test: ## Run test command
-	go test ./src
+	go test -v ./src
 
 # .PHONY: clear
 # clear: ## Clear generated files
