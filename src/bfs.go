@@ -3,6 +3,8 @@ package main
 import (
 	"errors"
 	"slices"
+
+	"github.com/MaoDeMatos/pathfinder-algorithm-go/src/internal/util"
 )
 
 var (
@@ -42,7 +44,7 @@ func BreadthFirstSearch(input Input) (route []Node, err error) {
 		return route, err
 	}
 
-	q := Queue[Node]{}
+	q := util.Queue[Node]{}
 	q.Enqueue(rootNode)
 
 	// create a parent map to save the interactions between nodes and recreate the path
