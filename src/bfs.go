@@ -22,10 +22,10 @@ var Directions = [4][2]int{
 type NodeType rune
 
 const (
-	StartNode  NodeType = 's'
-	EndNode    NodeType = 'e'
-	WallNode   NodeType = 'w'
-	NormalNode NodeType = 'n'
+	StartNode  NodeType = 'S'
+	EndNode    NodeType = 'E'
+	WallNode   NodeType = 'X'
+	NormalNode NodeType = '.'
 )
 
 type Node struct {
@@ -38,8 +38,8 @@ type Row []Node
 type Input []Row
 
 func (in *Input) findNodeByType(nodeType NodeType) (Node, error) {
-	for rowIndex := range *in {
-		for _, node := range (*in)[rowIndex] {
+	for _, row := range *in {
+		for _, node := range row {
 			if node.Type == nodeType {
 				return node, nil
 			}
@@ -50,8 +50,8 @@ func (in *Input) findNodeByType(nodeType NodeType) (Node, error) {
 }
 
 func (in *Input) findNodeByCoordinates(x, y int) (Node, error) {
-	for rowIndex := range *in {
-		for _, node := range (*in)[rowIndex] {
+	for _, row := range *in {
+		for _, node := range row {
 			if node.X == x && node.Y == y {
 				return node, nil
 			}
@@ -100,6 +100,8 @@ func BreadthFirstSearch(input Input) (solution Solution, err error) {
 			// build route from the node history
 			for parentNode, exists := parents[currentNode]; exists; parentNode, exists = parents[parentNode] {
 				solution = append(solution, parentNode)
+				// This is needed because on the first iteration,
+				// we're adding the starting node to the `parents` slice
 				if parentNode.Type == StartNode {
 					break
 				}
@@ -111,26 +113,22 @@ func BreadthFirstSearch(input Input) (solution Solution, err error) {
 			return solution, nil
 		}
 
-		// find neighbors
-		neighbors := []Node{}
+		// find neighbor nodes
 		for _, dir := range Directions {
 			x, y := dir[1], dir[0]
+
 			neighborNode, notFound := input.findNodeByCoordinates(
 				currentNode.X+x,
 				currentNode.Y+y,
 			)
 
-			// If node exists and is not a wall, you can add it to the list of nodes to add to the queue
+			// if node exists and is not a wall, you can add it to the queue
 			if notFound == nil && neighborNode.Type != WallNode {
-				neighbors = append(neighbors, neighborNode)
-			}
-		}
-
-		for _, neighbor := range neighbors {
-			// check if the neighbor has not already been visited
-			if _, visited := parents[neighbor]; !visited {
-				parents[neighbor] = currentNode // add neighbor to parents map associated to current node value
-				q.Enqueue(neighbor)             // add neighbor to the end of the queue
+				// check if the neighbor has not already been visited
+				if _, visited := parents[neighborNode]; !visited {
+					parents[neighborNode] = currentNode // add neighbor to parents map associated to current node value
+					q.Enqueue(neighborNode)             // add neighbor to the end of the queue
+				}
 			}
 		}
 	}
