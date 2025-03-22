@@ -4,49 +4,6 @@ import (
 	"testing"
 )
 
-var simpleInput = Input{
-	{
-		Node{X: 0, Y: 0, Type: StartNode},
-		Node{X: 1, Y: 0, Type: NormalNode},
-		Node{X: 2, Y: 0, Type: EndNode},
-	},
-}
-
-var errorInput = Input{
-	{
-		Node{X: 0, Y: 0, Type: StartNode},
-		Node{X: 1, Y: 0, Type: NormalNode},
-		Node{X: 2, Y: 0, Type: NormalNode},
-	},
-}
-
-var fourByFourInput = Input{
-	{
-		Node{X: 0, Y: 0, Type: StartNode},
-		Node{X: 1, Y: 0, Type: NormalNode},
-		Node{X: 2, Y: 0, Type: WallNode},
-		Node{X: 3, Y: 0, Type: NormalNode},
-	},
-	{
-		Node{X: 0, Y: 1, Type: NormalNode},
-		Node{X: 1, Y: 1, Type: WallNode},
-		Node{X: 2, Y: 1, Type: NormalNode},
-		Node{X: 3, Y: 1, Type: NormalNode},
-	},
-	{
-		Node{X: 0, Y: 2, Type: NormalNode},
-		Node{X: 1, Y: 2, Type: NormalNode},
-		Node{X: 2, Y: 2, Type: WallNode},
-		Node{X: 3, Y: 2, Type: WallNode},
-	},
-	{
-		Node{X: 0, Y: 3, Type: WallNode},
-		Node{X: 1, Y: 3, Type: NormalNode},
-		Node{X: 2, Y: 3, Type: NormalNode},
-		Node{X: 3, Y: 3, Type: EndNode},
-	},
-}
-
 var testCases = []struct {
 	name     string
 	input    Input
@@ -60,8 +17,14 @@ var testCases = []struct {
 		error:    nil,
 	},
 	{
-		name:     "error input - no end node",
-		input:    errorInput,
+		name:     "error - no end node",
+		input:    errorNoEndInput,
+		expected: nil,
+		error:    ErrNotFound,
+	},
+	{
+		name:     "error - no path to end node",
+		input:    errorNoPathInput,
 		expected: nil,
 		error:    ErrNotFound,
 	},
