@@ -7,14 +7,18 @@ import (
 var testCases = []struct {
 	name     string
 	input    Input
-	expected []Node
+	expected Solution
 	error    error
 }{
 	{
-		name:     "simplest input",
-		input:    simpleInput,
-		expected: simpleInput[0],
-		error:    nil,
+		name:  "simplest input",
+		input: simpleInput,
+		expected: Solution{
+			Node{X: 0, Y: 0, Type: StartNode},
+			Node{X: 1, Y: 0, Type: NormalNode},
+			Node{X: 2, Y: 0, Type: EndNode},
+		},
+		error: nil,
 	},
 	{
 		name:     "error - no end node",
@@ -31,7 +35,7 @@ var testCases = []struct {
 	{
 		name:  "4x4 input",
 		input: fourByFourInput,
-		expected: []Node{
+		expected: Solution{
 			{X: 0, Y: 0, Type: StartNode},
 			{X: 0, Y: 1, Type: NormalNode},
 			{X: 0, Y: 2, Type: NormalNode},
@@ -56,7 +60,7 @@ func TestBreadthFirstSearch(t *testing.T) {
 	}
 }
 
-func areNodesListsEqual(a, b []Node) bool {
+func areNodesListsEqual(a, b Solution) bool {
 	if len(a) != len(b) {
 		return false
 	}

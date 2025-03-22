@@ -37,11 +37,45 @@ type Node struct {
 type Row []Node
 type Input []Row
 
-func BreadthFirstSearch(input Input) (route []Node, err error) {
-	rootNode, err := findNodeByType(input, StartNode)
+func (in *Input) findNodeByType(nodeType NodeType) (Node, error) {
+	for rowIndex := range *in {
+		for _, node := range (*in)[rowIndex] {
+			if node.Type == nodeType {
+				return node, nil
+			}
+		}
+	}
+
+	return Node{}, ErrNotFound
+}
+
+func (in *Input) findNodeByCoordinates(x, y int) (Node, error) {
+	for rowIndex := range *in {
+		for _, node := range (*in)[rowIndex] {
+			if node.X == x && node.Y == y {
+				return node, nil
+			}
+		}
+	}
+
+	return Node{}, ErrNotFound
+}
+
+type Solution []Node
+
+func (s *Solution) contains(node Node) bool {
+	return slices.Contains(*s, node)
+}
+
+//
+// Algorithm
+//
+
+func BreadthFirstSearch(input Input) (solution Solution, err error) {
+	rootNode, err := input.findNodeByType(StartNode)
 
 	if err != nil {
-		return route, err
+		return solution, err
 	}
 
 	q := util.Queue[Node]{}
@@ -56,33 +90,32 @@ func BreadthFirstSearch(input Input) (route []Node, err error) {
 		currentNode, err := q.Dequeue()
 
 		if err != nil {
-			return route, err
+			return solution, err
 		}
 
 		// check if this is the target
 		if currentNode.Type == EndNode {
-			route = append(route, currentNode)
+			solution = append(solution, currentNode)
 
 			// build route from the node history
 			for parentNode, exists := parents[currentNode]; exists; parentNode, exists = parents[parentNode] {
-				route = append(route, parentNode)
+				solution = append(solution, parentNode)
 				if parentNode.Type == StartNode {
 					break
 				}
 			}
 
 			// reverse the route since we built it from end to start
-			slices.Reverse(route)
+			slices.Reverse(solution)
 
-			return route, nil
+			return solution, nil
 		}
 
 		// find neighbors
 		neighbors := []Node{}
 		for _, dir := range Directions {
 			x, y := dir[1], dir[0]
-			neighborNode, notFound := findNodeByCoordinates(
-				input,
+			neighborNode, notFound := input.findNodeByCoordinates(
 				currentNode.X+x,
 				currentNode.Y+y,
 			)
@@ -102,29 +135,5 @@ func BreadthFirstSearch(input Input) (route []Node, err error) {
 		}
 	}
 
-	return route, ErrNoResult
-}
-
-func findNodeByType(input Input, nodeType NodeType) (Node, error) {
-	for rowIndex := range input {
-		for _, node := range input[rowIndex] {
-			if node.Type == nodeType {
-				return node, nil
-			}
-		}
-	}
-
-	return Node{}, ErrNotFound
-}
-
-func findNodeByCoordinates(input Input, x, y int) (Node, error) {
-	for rowIndex := range input {
-		for _, node := range input[rowIndex] {
-			if node.X == x && node.Y == y {
-				return node, nil
-			}
-		}
-	}
-
-	return Node{}, ErrNotFound
+	return solution, ErrNoResult
 }
